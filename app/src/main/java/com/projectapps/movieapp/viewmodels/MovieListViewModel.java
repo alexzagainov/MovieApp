@@ -31,4 +31,9 @@ public class MovieListViewModel extends ViewModel {
     public MutableLiveData<List<MovieModel>> getNowPlaying() {
         return movieRepository.getNowPlaying();
     }
+    public MutableLiveData<List<MovieModel>> getMovies(String type, String movieName, int page) {
+        return movieRepository.getMovies(type,movieName,page);
+
+
+    }
 }

@@ -43,4 +43,8 @@ public class MovieRepository {
     public MutableLiveData<List<MovieModel>> getNowPlaying() {
         return movieApiClient.getNowPlaying();
     }
+
+    public MutableLiveData<List<MovieModel>> getMovies(String type, String movieName, int page) {
+        return movieApiClient.getMovies(type,movieName,page);
+    }
 }

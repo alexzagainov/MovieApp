@@ -15,11 +15,11 @@ import com.projectapps.movieapp.models.MovieModel;
 
 import java.util.ArrayList;
 
-public class PopularListAdapter extends RecyclerView.Adapter<PopularListAdapter.PopularListHolder> {
+public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.PopularListHolder> {
     Context context;
     ArrayList<MovieModel> movieList;
 
-    public PopularListAdapter(Context context, ArrayList<MovieModel> movieList) {
+    public CategoryListAdapter(Context context, ArrayList<MovieModel> movieList) {
         this.context = context;
         this.movieList = movieList;
     }
@@ -64,10 +64,15 @@ public class PopularListAdapter extends RecyclerView.Adapter<PopularListAdapter.
 
     private static void loadImage(ImageView imageView, String imageUrl){
         // Basic Url: "https://image.tmdb.org/t/p/w500"
-        String imagePath = "https://image.tmdb.org/t/p/w500"+imageUrl;
+        if(imageUrl== null){
+            imageView.setImageResource(R.drawable.no_image_available);
+        }else {
+            String imagePath = "https://image.tmdb.org/t/p/w500" + imageUrl;
 
-        Glide.with(imageView.getContext())
-                .load(imagePath)
-                .into(imageView);
+            Glide.with(imageView.getContext())
+                    .load(imagePath)
+                    .into(imageView);
+        }
+
     }
 }

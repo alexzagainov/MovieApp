@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.projectapps.movieapp.MainActivity;
-import com.projectapps.movieapp.PopularListAdapter;
+import com.projectapps.movieapp.CategoryListAdapter;
 import com.projectapps.movieapp.R;
 import com.projectapps.movieapp.models.MovieModel;
 import com.projectapps.movieapp.viewmodels.MovieListViewModel;
@@ -23,8 +23,9 @@ import java.util.List;
 public class CategoryMoviesList extends AppCompatActivity {
     ArrayList<MovieModel> movies;
     RecyclerView recyclerView;
+    RecyclerView pagesRecyclerView;
 
-    PopularListAdapter adapter;
+    CategoryListAdapter adapter;
 
     MovieListViewModel viewModel;
 
@@ -46,8 +47,9 @@ public class CategoryMoviesList extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(MovieListViewModel.class);
 
-
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
+
+
 
         getMovies(type);
 
@@ -66,6 +68,8 @@ public class CategoryMoviesList extends AppCompatActivity {
 
 
 
+
+
     void getMovies(String type){
 
         if(type.equals("Search")) {
@@ -75,7 +79,7 @@ public class CategoryMoviesList extends AppCompatActivity {
                     for (MovieModel movie : movieModels) {
                         movies.add(movie);
                     }
-                    adapter = new PopularListAdapter(getApplicationContext(), movies);
+                    adapter = new CategoryListAdapter(getApplicationContext(), movies);
                     recyclerView.setAdapter(adapter);
                 }
             });
@@ -88,7 +92,7 @@ public class CategoryMoviesList extends AppCompatActivity {
                     for (MovieModel movie : movieModels) {
                         movies.add(movie);
                     }
-                    adapter = new PopularListAdapter(getApplicationContext(), movies);
+                    adapter = new CategoryListAdapter(getApplicationContext(), movies);
                     recyclerView.setAdapter(adapter);
 
                 }
@@ -102,7 +106,7 @@ public class CategoryMoviesList extends AppCompatActivity {
                     for(MovieModel movie:movieModels){
                         movies.add(movie);
                     }
-                    adapter= new PopularListAdapter(getApplicationContext(),movies);
+                    adapter= new CategoryListAdapter(getApplicationContext(),movies);
                     recyclerView.setAdapter(adapter);
                 }
             });
@@ -114,7 +118,7 @@ public class CategoryMoviesList extends AppCompatActivity {
                     for(MovieModel movie:movieModels){
                         movies.add(movie);
                     }
-                    adapter = new PopularListAdapter(getApplicationContext(),movies);
+                    adapter = new CategoryListAdapter(getApplicationContext(),movies);
                     recyclerView.setAdapter(adapter);
                 }
             });
@@ -126,7 +130,7 @@ public class CategoryMoviesList extends AppCompatActivity {
                     for(MovieModel movie:movieModels){
                         movies.add(movie);
                     }
-                    adapter = new PopularListAdapter(getApplicationContext(),movies);
+                    adapter = new CategoryListAdapter(getApplicationContext(),movies);
                     recyclerView.setAdapter(adapter);
                 }
             });

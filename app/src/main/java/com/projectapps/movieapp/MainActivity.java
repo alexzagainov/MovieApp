@@ -1,6 +1,7 @@
 package com.projectapps.movieapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     ImageView welcomImage;
     Button popularBTN;
     Button upcomingBTN;
@@ -45,13 +46,11 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<MovieModel> topRatedMovies;
     ArrayList<MovieModel> nowPlayingMovies;
 
+
     MainMovieListAdapter mainAdapter;
 
 
-    /*MovieAdapter popularMovieAdapter;
-    MovieAdapter upcomingMovieAdapter;
-    MovieAdapter topRatedMovieAdapter;
-    MovieAdapter nowPlayingMovieAdapter;*/
+
 
 
     MovieListViewModel movieListViewModel;
@@ -59,6 +58,72 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setMainActivity();
+
+        searchBTN.setOnClickListener(this);
+        popularBTN.setOnClickListener(this);
+        upcomingBTN.setOnClickListener(this);
+        topRatedBTN.setOnClickListener(this);
+        nowPlayingBTN.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        int buttonId = v.getId();
+        if(buttonId == R.id.popularMoviesButton){
+            moveToCategoryView("Popular");
+        }
+        if(buttonId == R.id.upcomingMoviesBTN){
+            moveToCategoryView("Upcoming");
+        }
+        if(buttonId == R.id.topRatedMoviesBTN){
+            moveToCategoryView("TopRated");
+        }
+        if(buttonId == R.id.nowPlayingMoviesBTN){
+            moveToCategoryView("NowPlaying");
+        }
+        if(buttonId == R.id.searchBTN){
+            Intent i = new Intent(getApplicationContext(), CategoryMoviesList.class);
+            i.putExtra("type","Search");
+            i.putExtra("search",searchBar.getText().toString());
+            startActivity(i);
+        }
+    }
+
+    private void ObserveAnyChange() {
+
+        DisplayMovies(movieListViewModel.getMovies("Popular", "", 1), popularMovies, popularRecycleView);
+        DisplayMovies(movieListViewModel.getMovies("Upcoming", "", 1), upcomingMovies, upcomingRecyclerView);
+        DisplayMovies(movieListViewModel.getMovies("TopRated", "", 1), topRatedMovies, topRatedRecyclerView);
+        DisplayMovies(movieListViewModel.getMovies("NowPlaying", "", 1), nowPlayingMovies, nowPlayingRecyclerView);
+    }
+
+
+
+
+    private void moveToCategoryView(String category){
+        Intent i = new Intent(getApplicationContext(), CategoryMoviesList.class);
+        i.putExtra("type",category);
+        startActivity(i);
+    }
+
+    private void DisplayMovies(MutableLiveData<List<MovieModel>> mutableMovielist, ArrayList<MovieModel> movieList, RecyclerView recyclerView){
+        mutableMovielist.observe(this, new Observer<List<MovieModel>>() {
+            @Override
+            public void onChanged(List<MovieModel> movieModels) {
+                for(MovieModel movie:movieModels){
+                    movieList.add(movie);
+                }
+                mainAdapter = new MainMovieListAdapter(getApplicationContext(),movieList);
+                recyclerView.setAdapter(mainAdapter);
+            }
+        });
+
+    }
+
+    private void setMainActivity(){
         setContentView(R.layout.activity_main);
 
         welcomImage = findViewById(R.id.main_welcome_image);
@@ -79,11 +144,11 @@ public class MainActivity extends AppCompatActivity {
         nowPlayingRecyclerView = findViewById(R.id.nowPlayingRecyclerView);
         movieListViewModel =new ViewModelProvider(this).get(MovieListViewModel.class);
 
-         searchMovies = new ArrayList<>();
-         popularMovies = new ArrayList<>();
-         upcomingMovies = new ArrayList<>();
-         topRatedMovies = new ArrayList<>();
-         nowPlayingMovies = new ArrayList<>();
+        searchMovies = new ArrayList<>();
+        popularMovies = new ArrayList<>();
+        upcomingMovies = new ArrayList<>();
+        topRatedMovies = new ArrayList<>();
+        nowPlayingMovies = new ArrayList<>();
 
         RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false);
         RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false);
@@ -96,104 +161,10 @@ public class MainActivity extends AppCompatActivity {
         topRatedRecyclerView.setLayoutManager(layoutManager4);
 
         ObserveAnyChange();
-
-        searchBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), CategoryMoviesList.class);
-                i.putExtra("type","Search");
-                i.putExtra("search",searchBar.getText().toString());
-                startActivity(i);
-            }
-        });
-
-        popularBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                moveToCategoryView("Popular");
-            }
-        });
-
-        upcomingBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                moveToCategoryView("Upcoming");
-            }
-        });
-
-        topRatedBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                moveToCategoryView("TopRated");
-            }
-        });
-
-        nowPlayingBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                moveToCategoryView("NowPlaying");
-            }
-        });
-
     }
 
 
-    private void ObserveAnyChange(){
-        movieListViewModel.getPopular().observe(this, new Observer<List<MovieModel>>() {
-            @Override
-            public void onChanged(List<MovieModel> movieModels) {
-                for(MovieModel movie:movieModels){
-                    popularMovies.add(movie);
-                }
-                mainAdapter = new MainMovieListAdapter(getApplicationContext(),popularMovies);
-                popularRecycleView.setAdapter(mainAdapter);
 
-            }
-        });
-
-        movieListViewModel.getUpcoming().observe(this, new Observer<List<MovieModel>>() {
-            @Override
-            public void onChanged(List<MovieModel> movieModels) {
-                for(MovieModel movie:movieModels){
-                    upcomingMovies.add(movie);
-                }
-                mainAdapter = new MainMovieListAdapter(getApplicationContext(),upcomingMovies);
-                upcomingRecyclerView.setAdapter(mainAdapter);
-            }
-        });
-        movieListViewModel.getNowPlaying().observe(this, new Observer<List<MovieModel>>() {
-            @Override
-            public void onChanged(List<MovieModel> movieModels) {
-                for(MovieModel movie:movieModels){
-                    nowPlayingMovies.add(movie);
-                }
-                mainAdapter = new MainMovieListAdapter(getApplicationContext(),nowPlayingMovies);
-                nowPlayingRecyclerView.setAdapter(mainAdapter);
-            }
-        });
-        movieListViewModel.getTopRated().observe(this, new Observer<List<MovieModel>>() {
-            @Override
-            public void onChanged(List<MovieModel> movieModels) {
-                for(MovieModel movie:movieModels){
-                    topRatedMovies.add(movie);
-                }
-                mainAdapter = new MainMovieListAdapter(getApplicationContext(),topRatedMovies);
-                topRatedRecyclerView.setAdapter(mainAdapter);
-            }
-        });
-
-
-    }
-
-    void getMovieListTo(ArrayList<MovieModel> movieList){
-
-    }
-
-    void moveToCategoryView(String category){
-        Intent i = new Intent(getApplicationContext(), CategoryMoviesList.class);
-        i.putExtra("type",category);
-        startActivity(i);
-    }
 
 
 }
