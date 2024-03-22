@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.projectapps.movieapp.models.MovieModel;
 import com.projectapps.movieapp.viewmodels.MovieListViewModel;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setMainActivity();
 
+
         searchBTN.setOnClickListener(this);
         popularBTN.setOnClickListener(this);
         upcomingBTN.setOnClickListener(this);
@@ -85,10 +87,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             moveToCategoryView("NowPlaying");
         }
         if(buttonId == R.id.searchBTN){
-            Intent i = new Intent(getApplicationContext(), CategoryMoviesList.class);
-            i.putExtra("type","Search");
-            i.putExtra("search",searchBar.getText().toString());
-            startActivity(i);
+            if(!searchBar.getText().toString().isEmpty()) {
+                Intent i = new Intent(getApplicationContext(), CategoryMoviesList.class);
+                i.putExtra("type", "Search");
+                i.putExtra("search", searchBar.getText().toString());
+                startActivity(i);
+            }else{
+                Toast.makeText(this, "No text entered", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -127,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         welcomImage = findViewById(R.id.main_welcome_image);
-        welcomImage.setImageResource(R.drawable.movie_app);
+        welcomImage.setImageResource(R.drawable.mainmoviephoto);
 
 
         popularBTN = findViewById(R.id.popularMoviesButton);
@@ -162,9 +168,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ObserveAnyChange();
     }
-
-
-
-
 
 }

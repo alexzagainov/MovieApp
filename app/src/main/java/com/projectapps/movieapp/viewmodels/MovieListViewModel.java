@@ -15,22 +15,6 @@ public class MovieListViewModel extends ViewModel {
         movieRepository = MovieRepository.getInstance();
     }
 
-    public MutableLiveData<List<MovieModel>> searchMovies(String movieName) {
-        return movieRepository.searchMovies(movieName);
-    }
-    public MutableLiveData<List<MovieModel>> getPopular() {
-        return movieRepository.getPopular();
-    }
-    public MutableLiveData<List<MovieModel>> getUpcoming() {
-        return movieRepository.getUpcoming();
-    }
-
-    public MutableLiveData<List<MovieModel>> getTopRated() {
-        return movieRepository.getTopRated();
-    }
-    public MutableLiveData<List<MovieModel>> getNowPlaying() {
-        return movieRepository.getNowPlaying();
-    }
     public MutableLiveData<List<MovieModel>> getMovies(String type, String movieName, int page) {
         return movieRepository.getMovies(type,movieName,page);
 

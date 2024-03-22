@@ -27,22 +27,6 @@ public class MovieRepository {
         movieApiClient = MovieApiClient.getInstance();
     }
 
-    public MutableLiveData<List<MovieModel>> searchMovies(String movieName){
-        return movieApiClient.searchMovies(movieName);}
-
-    public MutableLiveData<List<MovieModel>> getPopular() {
-        return movieApiClient.getPopular();
-    }
-    public MutableLiveData<List<MovieModel>> getUpcoming() {
-        return movieApiClient.getUpcoming();
-    }
-
-    public MutableLiveData<List<MovieModel>> getTopRated() {
-        return movieApiClient.getTopRated();
-    }
-    public MutableLiveData<List<MovieModel>> getNowPlaying() {
-        return movieApiClient.getNowPlaying();
-    }
 
     public MutableLiveData<List<MovieModel>> getMovies(String type, String movieName, int page) {
         return movieApiClient.getMovies(type,movieName,page);

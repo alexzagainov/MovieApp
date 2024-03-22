@@ -18,6 +18,8 @@ import java.util.ArrayList;
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.PopularListHolder> {
     Context context;
     ArrayList<MovieModel> movieList;
+    String movieFullDate;
+    String movieName;
 
     public CategoryListAdapter(Context context, ArrayList<MovieModel> movieList) {
         this.context = context;
@@ -38,8 +40,20 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     @Override
     public void onBindViewHolder(@NonNull PopularListHolder holder, int position) {
         MovieModel movie = movieList.get(position);
-        holder.movieName.setText(movie.getTitle());
-        holder.movieReleaeDate.setText(movie.getRelease_date());
+        movieName = movie.getTitle();
+        movieFullDate = movie.getRelease_date();
+        if(movieName.length() >= 13){
+            movieName = movieName.substring(0,10)+"...";
+        }
+        if(!movieFullDate.isEmpty()){
+            if(movieFullDate.length()>4){
+                movieFullDate = movieFullDate.substring(0,4);
+            }
+        }
+
+
+        holder.movieName.setText(movieName+"\n("+ movieFullDate+")");
+
         loadImage(holder.movieImage, movie.getPoster_path());
     }
 
@@ -50,13 +64,11 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     public class PopularListHolder extends RecyclerView.ViewHolder {
         TextView movieName;
-        TextView movieReleaeDate;
         ImageView movieImage;
 
         public PopularListHolder(@NonNull View itemView) {
             super(itemView);
             movieName = itemView.findViewById(R.id.movieName);
-            movieReleaeDate = itemView.findViewById(R.id.movieReleaseDate);
             movieImage = itemView.findViewById(R.id.movieImage);
         }
     }

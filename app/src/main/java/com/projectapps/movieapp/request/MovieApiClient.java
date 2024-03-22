@@ -2,6 +2,7 @@ package com.projectapps.movieapp.request;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.projectapps.movieapp.models.MovieModel;
@@ -44,311 +45,66 @@ public class MovieApiClient {
         nowPlayingMovies = new MutableLiveData<List<MovieModel>>();
         movieList = new MutableLiveData<List<MovieModel>>();
 
-
     }
 
     public MutableLiveData<List<MovieModel>> getMovies(String type, String movieName, int page) {
-        if (type.equals("Search")) {
-            Call<MovieSearchResponse> responseCall = movieApi.searchMovie(Credentials.API_KEY,movieName,page);
-            responseCall.enqueue(new Callback<MovieSearchResponse>() {
-                @Override
-                public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
-                    if(response.code() == 200){
-                        if(response.body() != null) {
-                            Log.v("Tag", "Search result MOVIES");
-                            List<MovieModel> movies = new ArrayList<>(response.body().getMovies());
-                            for (MovieModel movie : movies) {
-                                Log.v("Tag", "The release date: " + movie.getRelease_date());
-                            }
-                            searchMovies.postValue(movies);
-                        }
-                    }else{
-                        try {
-                            Log.v("TAG","Error "+ response.errorBody().string());
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<MovieSearchResponse> call, Throwable t) {
-
-                }
-            });
+        switch (type){
+            case "Search":
+                return (CallMovie(searchMovies,getResponseCall(type,movieName,page)));
+            case "Popular":
+                return (CallMovie(popularMovies,getResponseCall(type,movieName,page)));
+            case "Upcoming":
+                return (CallMovie(upcomingMovies,getResponseCall(type,movieName,page)));
+            case "TopRated":
+                return (CallMovie(topRatedMovies,getResponseCall(type,movieName,page)));
+            case "NowPlaying":
+                return (CallMovie(nowPlayingMovies,getResponseCall(type,movieName,page)));
+            default:
+                return (CallMovie(searchMovies,getResponseCall(type,movieName,page)));
         }
-        if (type.equals("Popular")) {
-            Call<MovieSearchResponse> responseCall = movieApi.getPopular(Credentials.API_KEY, page);
-            responseCall.enqueue(new Callback<MovieSearchResponse>() {
-                @Override
-                public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
-                    if (response.code() == 200) {
-                        if (response.body() != null) {
-                            List<MovieModel> movies = new ArrayList<>(response.body().getMovies());
-                            popularMovies.postValue(movies);
-                        }
-                    } else {
-                        try {
-                            Log.v("TAG", "Error " + response.errorBody().string());
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                }
+    }
 
-                @Override
-                public void onFailure(Call<MovieSearchResponse> call, Throwable t) {}
-            });
-            return popularMovies;
-        } else if (type.equals("Upcoming")) {
-            Call<MovieSearchResponse> responseCall = movieApi.getUpcoming(Credentials.API_KEY, page);
-            responseCall.enqueue(new Callback<MovieSearchResponse>() {
-                @Override
-                public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
-                    if (response.code() == 200) {
-                        if (response.body() != null) {
-                            Log.v("Tag", "Upcoming MOVIES");
-                            List<MovieModel> movies = new ArrayList<>(response.body().getMovies());
-                            for (MovieModel movie : movies) {
-                                Log.v("Tag", "The release date: " + movie.getRelease_date());
-                            }
-                            upcomingMovies.postValue(movies);
-                        }
-                    } else {
-                        try {
-                            Log.v("TAG", "Error " + response.errorBody().string());
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                }
 
-                @Override
-                public void onFailure(Call<MovieSearchResponse> call, Throwable t) {}
-            });
-            return upcomingMovies;
-        } else if (type.equals("TopRated")) {
-            Call<MovieSearchResponse> responseCall = movieApi.getTopRated(Credentials.API_KEY, page);
-            responseCall.enqueue(new Callback<MovieSearchResponse>() {
-                @Override
-                public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
-                    if (response.code() == 200) {
-                        if (response.body() != null) {
-                            Log.v("Tag", "Top Rated MOVIES");
-                            List<MovieModel> movies = new ArrayList<>(response.body().getMovies());
-                            for (MovieModel movie : movies) {
-                                Log.v("Tag", "The release date: " + movie.getRelease_date());
-                            }
-                            topRatedMovies.postValue(movies);
-                        }
-                    } else {
-                        try {
-                            Log.v("TAG", "Error " + response.errorBody().string());
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<MovieSearchResponse> call, Throwable t) {}
-            });
-            return topRatedMovies;
-        } else if (type.equals("NowPlaying")) {
-            Call<MovieSearchResponse> responseCall = movieApi.getNowPlaying(Credentials.API_KEY, page);
-            responseCall.enqueue(new Callback<MovieSearchResponse>() {
-                @Override
-                public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
-                    if (response.code() == 200) {
-                        if (response.body() != null) {
-                            Log.v("Tag", "Now Playing MOVIES");
-                            List<MovieModel> movies = new ArrayList<>(response.body().getMovies());
-                            for (MovieModel movie : movies) {
-                                Log.v("Tag", "The release date: " + movie.getRelease_date());
-                            }
-                            nowPlayingMovies.postValue(movies);
-                        }
-                    } else {
-                        try {
-                            Log.v("TAG", "Error " + response.errorBody().string());
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<MovieSearchResponse> call, Throwable t) {}
-            });
-            return nowPlayingMovies;
+    private Call<MovieSearchResponse> getResponseCall(String type,String movieName,int page){
+        switch (type){
+            case "Search":
+                return movieApi.searchMovie(Credentials.API_KEY,movieName,page);
+            case "Popular":
+                return movieApi.getPopular(Credentials.API_KEY, page);
+            case "Upcoming":
+                return movieApi.getUpcoming(Credentials.API_KEY, page);
+            case "TopRated":
+                return movieApi.getTopRated(Credentials.API_KEY, page);
+            case "NowPlaying":
+                return movieApi.getNowPlaying(Credentials.API_KEY, page);
+            default:
+                return movieApi.searchMovie(Credentials.API_KEY,movieName,page);
         }
-        else{return movieList;}
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public MutableLiveData<List<MovieModel>> searchMovies(String movieName) {
-        Call<MovieSearchResponse> responseCall = movieApi.searchMovie(Credentials.API_KEY,movieName,1);
-        responseCall.enqueue(new Callback<MovieSearchResponse>() {
-            @Override
-            public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
-                if(response.code() == 200){
-                    if(response.body() != null) {
-                        Log.v("Tag", "Search result MOVIES");
-                        List<MovieModel> movies = new ArrayList<>(response.body().getMovies());
-                        for (MovieModel movie : movies) {
-                            Log.v("Tag", "The release date: " + movie.getRelease_date());
+    private MutableLiveData<List<MovieModel>> CallMovie(MutableLiveData<List<MovieModel>> movieList,Call<MovieSearchResponse> responseCall){
+            responseCall.enqueue(new Callback<MovieSearchResponse>() {
+                @Override
+                public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
+                    if (response.code() == 200) {
+                        if (response.body() != null) {
+                            List<MovieModel> movies = new ArrayList<>(response.body().getMovies());
+                            movieList.postValue(movies);
                         }
-                        searchMovies.postValue(movies);
-                    }
-                }else{
-                    try {
-                        Log.v("TAG","Error "+ response.errorBody().string());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MovieSearchResponse> call, Throwable t) {
-
-            }
-        });
-        return searchMovies;
-    }
-
-
-    public MutableLiveData<List<MovieModel>> getPopular() {
-        Call<MovieSearchResponse> responseCall = movieApi.getPopular(Credentials.API_KEY,1);
-        responseCall.enqueue(new Callback<MovieSearchResponse>() {
-            @Override
-            public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
-                if(response.code() == 200){
-                    if(response.body() != null) {
-                        List<MovieModel> movies = new ArrayList<>(response.body().getMovies());
-                        popularMovies.postValue(movies);
-                    }
-                }else{
-                    try {
-                        Log.v("TAG","Error "+ response.errorBody().string());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MovieSearchResponse> call, Throwable t) {
-
-            }
-        });
-        return popularMovies;
-    }
-    public MutableLiveData<List<MovieModel>> getUpcoming() {
-        Call<MovieSearchResponse> responseCall = movieApi.getUpcoming(Credentials.API_KEY,1);
-        responseCall.enqueue(new Callback<MovieSearchResponse>() {
-            @Override
-            public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
-                if(response.code() == 200){
-                    if(response.body() != null) {
-                        Log.v("Tag", "Upcoming MOVIES");
-                        List<MovieModel> movies = new ArrayList<>(response.body().getMovies());
-                        for (MovieModel movie : movies) {
-                            Log.v("Tag", "The release date: " + movie.getRelease_date());
+                    } else {
+                        try {
+                            Log.v("TAG", "Error " + response.errorBody().string());
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
                         }
-                        upcomingMovies.postValue(movies);
-                    }
-                }else{
-                    try {
-                        Log.v("TAG","Error "+ response.errorBody().string());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<MovieSearchResponse> call, Throwable t) {
-
-            }
-        });
-        return upcomingMovies;
+                @Override
+                public void onFailure(Call<MovieSearchResponse> call, Throwable t) {}
+            });
+            return movieList;
     }
-
-    public MutableLiveData<List<MovieModel>> getTopRated() {
-        Call<MovieSearchResponse> responseCall = movieApi.getTopRated(Credentials.API_KEY,1);
-        responseCall.enqueue(new Callback<MovieSearchResponse>() {
-            @Override
-            public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
-                if(response.code() == 200){
-                    if(response.body() != null) {
-                        Log.v("Tag", "Top Rated MOVIES");
-                        List<MovieModel> movies = new ArrayList<>(response.body().getMovies());
-                        for (MovieModel movie : movies) {
-                            Log.v("Tag", "The release date: " + movie.getRelease_date());
-                        }
-                        topRatedMovies.postValue(movies);
-                    }
-                }else{
-                    try {
-                        Log.v("TAG","Error "+ response.errorBody().string());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MovieSearchResponse> call, Throwable t) {
-
-            }
-        });
-        return topRatedMovies;
-    }
-    public MutableLiveData<List<MovieModel>> getNowPlaying() {
-        Call<MovieSearchResponse> responseCall = movieApi.getNowPlaying(Credentials.API_KEY,1);
-        responseCall.enqueue(new Callback<MovieSearchResponse>() {
-            @Override
-            public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
-                if(response.code() == 200){
-                    if(response.body() != null) {
-                        Log.v("Tag", "Now Playing MOVIES");
-                        List<MovieModel> movies = new ArrayList<>(response.body().getMovies());
-                        for (MovieModel movie : movies) {
-                            Log.v("Tag", "The release date: " + movie.getRelease_date());
-                        }
-                        nowPlayingMovies.postValue(movies);
-                    }
-                }else{
-                    try {
-                        Log.v("TAG","Error "+ response.errorBody().string());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MovieSearchResponse> call, Throwable t) {
-
-            }
-        });
-        return nowPlayingMovies;
-    }
-
 
 
 }
+
