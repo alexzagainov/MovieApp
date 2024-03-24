@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.projectapps.movieapp.models.MovieModel;
 import com.projectapps.movieapp.viewmodels.MovieListViewModel;
 import com.projectapps.movieapp.views.CategoryMoviesList;
+import com.projectapps.movieapp.views.MovieDetails;
 
 
 import java.util.ArrayList;
@@ -123,6 +124,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     movieList.add(movie);
                 }
                 mainAdapter = new MainMovieListAdapter(getApplicationContext(),movieList);
+                mainAdapter.setOnItemClickListener(new MainMovieListAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        Intent i = new Intent(getApplicationContext(), MovieDetails.class);
+                        i.putExtra("ImagePath", movieList.get(position).getPoster_path());
+                        i.putExtra("MovieName",movieList.get(position).getTitle());
+                        i.putExtra("MovieRating",Double.toString(movieList.get(position).getVote_avarage()));
+                        i.putExtra("MovieOverview",movieList.get(position).getMovie_overview());
+                        startActivity(i);
+                    }
+                });
                 recyclerView.setAdapter(mainAdapter);
             }
         });

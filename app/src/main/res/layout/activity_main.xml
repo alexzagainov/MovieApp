@@ -16,7 +16,6 @@
         tools:context=".MainActivity">
 
 
-
         <ImageView
             android:id="@+id/main_welcome_image"
             android:layout_width="match_parent"
@@ -24,13 +23,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"></ImageView>
 
-
         <EditText
             android:id="@+id/searchBar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginRight="12dp"
             android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
             android:background="@drawable/search_edittext_bg"
             android:hint="Search..."
             android:inputType="text"
@@ -73,7 +71,7 @@
                 android:paddingLeft="10dp"
                 android:text="Popular"
                 android:textColor="@color/black"
-                android:textSize="28dp"
+                android:textSize="25dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -85,8 +83,8 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:text="See all"
-                android:textSize="20dp"
                 android:textAllCaps="false"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"></Button>
 
@@ -105,7 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/popularRecyclerView">
+            app:layout_constraintTop_toBottomOf="@+id/popularYellowLine">
 
             <TextView
                 android:id="@+id/textUpcoming"
@@ -114,7 +112,7 @@
                 android:paddingLeft="10dp"
                 android:text="Upcoming"
                 android:textColor="@color/black"
-                android:textSize="28dp"
+                android:textSize="25dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -126,8 +124,8 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:text="See all"
-                android:textSize="20dp"
                 android:textAllCaps="false"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
@@ -147,7 +145,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/upcomingRecyclerView">
+            app:layout_constraintTop_toBottomOf="@+id/upcomingYellowLine">
 
             <TextView
                 android:id="@+id/topRated"
@@ -156,7 +154,7 @@
                 android:paddingLeft="10dp"
                 android:text="Top Rated"
                 android:textColor="@color/black"
-                android:textSize="28dp"
+                android:textSize="25dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -168,8 +166,8 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:text="See all"
-                android:textSize="20dp"
                 android:textAllCaps="false"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
@@ -193,7 +191,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/topRatedRecyclerView">
+            app:layout_constraintTop_toBottomOf="@+id/topRatedYellowLine">
 
             <TextView
                 android:id="@+id/nowPlaying"
@@ -202,7 +200,7 @@
                 android:paddingLeft="10dp"
                 android:text="Now Playing"
                 android:textColor="@color/black"
-                android:textSize="28dp"
+                android:textSize="25dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -214,8 +212,8 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:text="See all"
-                android:textSize="20dp"
                 android:textAllCaps="false"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"></Button>
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -224,24 +222,68 @@
             android:id="@+id/nowPlayingRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/linearNowPlayingLayout">
-        </androidx.recyclerview.widget.RecyclerView>
+            app:layout_constraintTop_toBottomOf="@id/linearNowPlayingLayout"></androidx.recyclerview.widget.RecyclerView>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            app:layout_constraintTop_toBottomOf="@id/nowPlayingRecyclerView"
-            android:background="#00092B">
+            android:background="#00092B"
+            app:layout_constraintTop_toBottomOf="@id/nowPlayingRecyclerView">
 
             <TextView
-                android:layout_marginTop="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="/@Created by: Alex Zagainov"
-                android:textSize="15dp"
+                android:layout_marginTop="30dp"
                 android:paddingLeft="20dp"
-                android:textColor="@color/white"></TextView>
+                android:text="/@Created by: Alex Zagainov"
+                android:textColor="@color/white"
+                android:textSize="15dp"></TextView>
         </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <ImageView
+            android:id="@+id/popularYellowLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/yellowline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/popularRecyclerView"></ImageView>
+
+        <ImageView
+            android:id="@+id/upcomingYellowLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/yellowline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/upcomingRecyclerView"></ImageView>
+
+        <ImageView
+            android:id="@+id/topRatedYellowLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/yellowline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topRatedRecyclerView"></ImageView>
+
+
+        <androidx.constraintlayout.widget.Barrier
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="top" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

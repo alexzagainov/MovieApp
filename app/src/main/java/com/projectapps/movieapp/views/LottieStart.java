@@ -1,4 +1,4 @@
-package com.projectapps.movieapp;
+package com.projectapps.movieapp.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.projectapps.movieapp.MainActivity;
+import com.projectapps.movieapp.R;
 
 public class LottieStart extends AppCompatActivity {
 
@@ -19,7 +21,7 @@ public class LottieStart extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
             }
         },2000);

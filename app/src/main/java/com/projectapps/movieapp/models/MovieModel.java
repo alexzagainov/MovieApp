@@ -22,29 +22,19 @@ public class MovieModel implements Parcelable {
     @SerializedName("id")
     @Expose
     private int movie_id;
-    @SerializedName("vote_avarage")
+    @SerializedName("vote_average")
     @Expose
-    private float vote_avarage;
+    private double vote_average;
     @SerializedName("overview")
     @Expose
     private String movie_overview;
-
-
-    public MovieModel(String title, String poster_path, String release_date, int movie_id, float vote_avarage, String movie_overview) {
-        this.title = title;
-        this.poster_path = poster_path;
-        this.release_date = release_date;
-        this.movie_id = movie_id;
-        this.vote_avarage = vote_avarage;
-        this.movie_overview = movie_overview;
-    }
 
     protected MovieModel(Parcel in) {
         title = in.readString();
         poster_path = in.readString();
         release_date = in.readString();
         movie_id = in.readInt();
-        vote_avarage = in.readFloat();
+        vote_average = in.readFloat();
         movie_overview = in.readString();
     }
 
@@ -76,8 +66,8 @@ public class MovieModel implements Parcelable {
         return movie_id;
     }
 
-    public float getVote_avarage() {
-        return vote_avarage;
+    public double getVote_avarage() {
+        return vote_average;
     }
 
     public String getMovie_overview() {
@@ -95,7 +85,7 @@ public class MovieModel implements Parcelable {
         dest.writeString(poster_path);
         dest.writeString(release_date);
         dest.writeInt(movie_id);
-        dest.writeFloat(vote_avarage);
+        dest.writeDouble(vote_average);
         dest.writeString(movie_overview);
     }
 }

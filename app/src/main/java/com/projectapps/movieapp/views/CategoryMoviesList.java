@@ -1,5 +1,6 @@
 package com.projectapps.movieapp.views;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -11,12 +12,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.projectapps.movieapp.MainActivity;
 import com.projectapps.movieapp.CategoryListAdapter;
-import com.projectapps.movieapp.MainMovieListAdapter;
 import com.projectapps.movieapp.R;
 import com.projectapps.movieapp.models.MovieModel;
 import com.projectapps.movieapp.viewmodels.MovieListViewModel;
@@ -24,7 +23,7 @@ import com.projectapps.movieapp.viewmodels.MovieListViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryMoviesList extends AppCompatActivity {
+public class CategoryMoviesList extends AppCompatActivity{
     ArrayList<MovieModel> movies;
     RecyclerView recyclerView;
     TextView category;
@@ -37,6 +36,7 @@ public class CategoryMoviesList extends AppCompatActivity {
     Button backBtn;
 
     String type;
+    int movies_page =1;
 
 
 
@@ -81,10 +81,22 @@ public class CategoryMoviesList extends AppCompatActivity {
         mutableMovielist.observe(this, new Observer<List<MovieModel>>() {
             @Override
             public void onChanged(List<MovieModel> movieModels) {
+                movieList.clear();
                 for(MovieModel movie:movieModels){
                     movieList.add(movie);
                 }
                 adapter = new CategoryListAdapter(getApplicationContext(),movieList);
+                adapter.setOnItemClickListener(new CategoryListAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        Intent i = new Intent(getApplicationContext(), MovieDetails.class);
+                        i.putExtra("ImagePath", movieList.get(position).getPoster_path());
+                        i.putExtra("MovieName",movieList.get(position).getTitle());
+                        i.putExtra("MovieRating",Double.toString(movieList.get(position).getVote_avarage()));
+                        i.putExtra("MovieOverview",movieList.get(position).getMovie_overview());
+                        startActivity(i);
+                    }
+                });
                 recyclerView.setAdapter(adapter);
             }
         });

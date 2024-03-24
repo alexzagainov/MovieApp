@@ -20,6 +20,16 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     ArrayList<MovieModel> movieList;
     String movieFullDate;
     String movieName;
+    private OnItemClickListener mListener;
+
+    // Interface to handle item clicks
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
 
     public CategoryListAdapter(Context context, ArrayList<MovieModel> movieList) {
         this.context = context;
@@ -51,10 +61,18 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             }
         }
 
-
         holder.movieName.setText(movieName+"\n("+ movieFullDate+")");
-
         loadImage(holder.movieImage, movie.getPoster_path());
+
+        // Set click listener
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null) {
+                    mListener.onItemClick(position);
+                }
+            }
+        });
     }
 
     @Override
@@ -73,7 +91,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         }
     }
 
-
     private static void loadImage(ImageView imageView, String imageUrl){
         // Basic Url: "https://image.tmdb.org/t/p/w500"
         if(imageUrl== null){
@@ -85,6 +102,5 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                     .load(imagePath)
                     .into(imageView);
         }
-
     }
 }
