@@ -25,13 +25,22 @@
 
         <ImageView
             android:id="@+id/detailMovieImage"
+            style="@style/roundedImageView"
             android:layout_width="match_parent"
             android:layout_height="531dp"
-            android:layout_marginTop="16dp"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"></ImageView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/gradient_background"
+            app:layout_constraintBottom_toTopOf="@+id/detailMovieName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"></View>
 
         <TextView
             android:id="@+id/detailMovieName"
@@ -43,8 +52,7 @@
             android:paddingRight="20dp"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
-            android:background="@drawable/search_edittext_bg"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="30dp"
             android:textStyle="bold
 "
