@@ -3,6 +3,8 @@ package com.projectapps.movieapp.repositories;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.projectapps.movieapp.models.ActorModel;
+import com.projectapps.movieapp.models.GenreModel;
 import com.projectapps.movieapp.models.MovieModel;
 import com.projectapps.movieapp.request.MovieApiClient;
 import com.projectapps.movieapp.utils.MovieApi;
@@ -30,5 +32,21 @@ public class MovieRepository {
 
     public MutableLiveData<List<MovieModel>> getMovies(String type, String movieName, int page) {
         return movieApiClient.getMovies(type,movieName,page);
+    }
+
+    public MutableLiveData<List<GenreModel>> getGenres(int movieId){
+        return movieApiClient.getGenres(movieId);
+    }
+
+    public MutableLiveData<List<MovieModel>> discoverMovies(String genre_id){
+        return movieApiClient.discoverMovies(genre_id);
+    }
+
+    public MutableLiveData<List<ActorModel>> getActors(String movieId){
+        return movieApiClient.getActors(movieId);
+    }
+
+    public MutableLiveData<List<MovieModel>> getSimilarMovies(String movieId){
+        return movieApiClient.getSimilarMovies(movieId);
     }
 }

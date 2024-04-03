@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         i.putExtra("MovieName",movieList.get(position).getTitle());
                         i.putExtra("MovieRating",Double.toString(movieList.get(position).getVote_avarage()));
                         i.putExtra("MovieOverview",movieList.get(position).getMovie_overview());
+                        i.putExtra("Movie_id",movieList.get(position).getMovie_id());
                         startActivity(i);
                     }
                 });
