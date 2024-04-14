@@ -1,4 +1,4 @@
-package com.projectapps.movieapp;
+package com.projectapps.movieapp.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.projectapps.movieapp.R;
 import com.projectapps.movieapp.models.MovieModel;
 import java.util.ArrayList;
 

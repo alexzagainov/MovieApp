@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.projectapps.movieapp.adapters.MainMovieListAdapter;
 import com.projectapps.movieapp.models.MovieModel;
 import com.projectapps.movieapp.viewmodels.MovieListViewModel;
 import com.projectapps.movieapp.views.CategoryMoviesList;

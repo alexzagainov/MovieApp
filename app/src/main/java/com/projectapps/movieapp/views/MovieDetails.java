@@ -15,11 +15,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.projectapps.movieapp.ActorsListAdapter;
-import com.projectapps.movieapp.CategoryListAdapter;
-import com.projectapps.movieapp.GenreListAdapter;
+import com.projectapps.movieapp.adapters.ActorsListAdapter;
+import com.projectapps.movieapp.adapters.CategoryListAdapter;
+import com.projectapps.movieapp.adapters.GenreListAdapter;
 import com.projectapps.movieapp.MainActivity;
-import com.projectapps.movieapp.MainMovieListAdapter;
+import com.projectapps.movieapp.adapters.MainMovieListAdapter;
 import com.projectapps.movieapp.R;
 import com.projectapps.movieapp.models.ActorModel;
 import com.projectapps.movieapp.models.GenreModel;
@@ -28,7 +28,6 @@ import com.projectapps.movieapp.viewmodels.MovieListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 public class MovieDetails extends AppCompatActivity implements View.OnClickListener {
 
@@ -87,6 +86,18 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
                 }
                 similarMoviesAdapter = new MainMovieListAdapter(getApplicationContext(),similarMovies);
                 similarRecyclerView.setAdapter(similarMoviesAdapter);
+                similarMoviesAdapter.setOnItemClickListener(new MainMovieListAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        Intent i = new Intent(getApplicationContext(), MovieDetails.class);
+                        i.putExtra("ImagePath", similarMovies.get(position).getPoster_path());
+                        i.putExtra("MovieName",similarMovies.get(position).getTitle());
+                        i.putExtra("MovieRating",Double.toString(similarMovies.get(position).getVote_avarage()));
+                        i.putExtra("MovieOverview",similarMovies.get(position).getMovie_overview());
+                        i.putExtra("Movie_id",similarMovies.get(position).getMovie_id());
+                        startActivity(i);
+                    }
+                });
             }
         });
 
@@ -134,8 +145,7 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(i);
+                finish();
             }
         });
 

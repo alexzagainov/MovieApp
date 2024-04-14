@@ -1,6 +1,5 @@
 package com.projectapps.movieapp.views;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -15,9 +14,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.projectapps.movieapp.MainActivity;
-import com.projectapps.movieapp.CategoryListAdapter;
+import com.projectapps.movieapp.adapters.CategoryListAdapter;
 import com.projectapps.movieapp.R;
-import com.projectapps.movieapp.models.GenreModel;
 import com.projectapps.movieapp.models.MovieModel;
 import com.projectapps.movieapp.viewmodels.MovieListViewModel;
 
@@ -124,8 +122,7 @@ public class CategoryMoviesList extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(i);
+                finish();
             }
         });
     }
