@@ -17,6 +17,18 @@
         android:theme="@style/Theme.MovieApp"
         tools:targetApi="33">
         <activity
+            android:name=".views.ShowDetails"
+            android:exported="false" />
+        <activity
+            android:name=".views.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".views.TvShow"
+            android:exported="false" />
+        <activity
+            android:name=".views.TvShows"
+            android:exported="false" />
+        <activity
             android:name=".views.MovieDetails"
             android:exported="false" />
         <activity
@@ -33,7 +45,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

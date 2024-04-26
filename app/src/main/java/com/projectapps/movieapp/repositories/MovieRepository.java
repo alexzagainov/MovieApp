@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.projectapps.movieapp.models.ActorModel;
 import com.projectapps.movieapp.models.GenreModel;
 import com.projectapps.movieapp.models.MovieModel;
+import com.projectapps.movieapp.models.ShowImageModel;
+import com.projectapps.movieapp.models.TvShowModel;
 import com.projectapps.movieapp.request.MovieApiClient;
 import com.projectapps.movieapp.utils.MovieApi;
 
@@ -48,5 +50,11 @@ public class MovieRepository {
 
     public MutableLiveData<List<MovieModel>> getSimilarMovies(String movieId){
         return movieApiClient.getSimilarMovies(movieId);
+    }
+    public MutableLiveData<List<TvShowModel>> getTvShows(){
+        return movieApiClient.getTvShows();
+    }
+    public MutableLiveData<List<ShowImageModel>> getTvShowsImages(String show_id){
+        return movieApiClient.getTvShowImages(show_id);
     }
 }

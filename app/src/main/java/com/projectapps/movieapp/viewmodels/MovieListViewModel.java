@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel;
 import com.projectapps.movieapp.models.ActorModel;
 import com.projectapps.movieapp.models.GenreModel;
 import com.projectapps.movieapp.models.MovieModel;
+import com.projectapps.movieapp.models.ShowImageModel;
+import com.projectapps.movieapp.models.TvShowModel;
 import com.projectapps.movieapp.repositories.MovieRepository;
 import com.projectapps.movieapp.request.Servicey;
 
@@ -34,5 +36,13 @@ public class MovieListViewModel extends ViewModel {
     }
     public MutableLiveData<List<MovieModel>> getSimilarMovies(String movieId){
         return movieRepository.getSimilarMovies(movieId);
+    }
+
+    public MutableLiveData<List<TvShowModel>> getTvShows(){
+        return movieRepository.getTvShows();
+    }
+
+    public MutableLiveData<List<ShowImageModel>> getTvShowsImages(String show_id){
+        return movieRepository.getTvShowsImages(show_id);
     }
 }

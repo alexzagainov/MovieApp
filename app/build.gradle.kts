@@ -31,6 +31,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.activity:activity:1.8.0")
     val lifecycle_version = "2.7.0"
 
     implementation("androidx.appcompat:appcompat:1.6.1")

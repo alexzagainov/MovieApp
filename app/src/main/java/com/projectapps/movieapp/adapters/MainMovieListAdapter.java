@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.projectapps.movieapp.R;
 import com.projectapps.movieapp.models.MovieModel;
+import com.projectapps.movieapp.utils.ImageLoader;
+
 import java.util.ArrayList;
 
 public class MainMovieListAdapter extends RecyclerView.Adapter<MainMovieListAdapter.MainViewHolder> {
@@ -22,6 +24,8 @@ public class MainMovieListAdapter extends RecyclerView.Adapter<MainMovieListAdap
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
+
+    private ImageLoader imageLoader = new ImageLoader();
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
@@ -42,7 +46,7 @@ public class MainMovieListAdapter extends RecyclerView.Adapter<MainMovieListAdap
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
         MovieModel movie = movieList.get(position);
-        loadImage(holder.movieImage, movie.getPoster_path());
+        imageLoader.loadImage(holder.movieImage, movie.getPoster_path());
 
         // Set click listener
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -67,14 +71,5 @@ public class MainMovieListAdapter extends RecyclerView.Adapter<MainMovieListAdap
             super(itemView);
             movieImage = itemView.findViewById(R.id.movie_main_Image);
         }
-    }
-
-    private void loadImage(ImageView imageView, String imageUrl) {
-        // Basic Url: "https://image.tmdb.org/t/p/w500"
-        String imagePath = "https://image.tmdb.org/t/p/w500" + imageUrl;
-
-        Glide.with(imageView.getContext())
-                .load(imagePath)
-                .into(imageView);
     }
 }

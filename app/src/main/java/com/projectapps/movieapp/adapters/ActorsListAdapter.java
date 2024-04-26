@@ -13,13 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.projectapps.movieapp.R;
 import com.projectapps.movieapp.models.ActorModel;
+import com.projectapps.movieapp.utils.ImageLoader;
 
 import java.util.ArrayList;
 
 public class ActorsListAdapter extends RecyclerView.Adapter<ActorsListAdapter.ActorsViewHolder> {
 
-    Context context;
-    ArrayList<ActorModel> actors;
+    private Context context;
+    private ArrayList<ActorModel> actors;
+
+    private ImageLoader imageLoader = new ImageLoader();
 
     public ActorsListAdapter(Context context, ArrayList<ActorModel> actors) {
         this.context = context;
@@ -38,7 +41,7 @@ public class ActorsListAdapter extends RecyclerView.Adapter<ActorsListAdapter.Ac
     public void onBindViewHolder(@NonNull ActorsViewHolder holder, int position) {
         ActorModel actor = actors.get(position);
         holder.actorName.setText(actor.getName());
-        loadImage(holder.actorImage, actor.getProfile_path());
+        imageLoader.loadImage(holder.actorImage, actor.getProfile_path());
     }
 
     @Override
@@ -54,19 +57,6 @@ public class ActorsListAdapter extends RecyclerView.Adapter<ActorsListAdapter.Ac
             super(itemView);
             actorImage = itemView.findViewById(R.id.actorImage);
             actorName = itemView.findViewById(R.id.actorName);
-        }
-    }
-
-    private static void loadImage(ImageView imageView, String imageUrl){
-        // Basic Url: "https://image.tmdb.org/t/p/w500"
-        if(imageUrl== null){
-            imageView.setImageResource(R.drawable.no_image_available);
-        }else {
-            String imagePath = "https://image.tmdb.org/t/p/w500" + imageUrl;
-
-            Glide.with(imageView.getContext())
-                    .load(imagePath)
-                    .into(imageView);
         }
     }
 }

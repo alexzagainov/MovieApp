@@ -4,19 +4,26 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.projectapps.movieapp.models.MovieModel;
 
-//This class is for single movie request
+import java.util.List;
+
+//This class is for getting multiple movies(Movies list) - popular movies
 public class MovieResponse {
+    @SerializedName("total_results")
+    @Expose()
+    private int total_count;
+
     @SerializedName("results")
-    @Expose
-    private MovieModel movie;
-    public MovieModel getMovie(){
-        return movie;
+    @Expose()
+    private List<MovieModel> movies;
+
+
+    public int getTotal_count(){
+        return total_count;
     }
 
-    @Override
-    public String toString() {
-        return "MovieResponse{" +
-                "movie=" + movie +
-                '}';
+
+    public List<MovieModel> getMovies() {
+        return movies;
     }
+
 }

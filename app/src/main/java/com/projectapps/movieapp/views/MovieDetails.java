@@ -24,6 +24,7 @@ import com.projectapps.movieapp.R;
 import com.projectapps.movieapp.models.ActorModel;
 import com.projectapps.movieapp.models.GenreModel;
 import com.projectapps.movieapp.models.MovieModel;
+import com.projectapps.movieapp.utils.ImageLoader;
 import com.projectapps.movieapp.viewmodels.MovieListViewModel;
 
 import java.util.ArrayList;
@@ -49,9 +50,31 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
     Button backButton;
     int genre_id;
 
+    ImageLoader imageLoader;
+
+    Intent i;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initiateView();
+
+        int movie_id = i.getIntExtra("Movie_id", 0);
+        getGenres(movie_id);
+        getActors(movie_id);
+        getSimilarMovies(movie_id);
+
+    }
+
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+
+    private void initiateView(){
+        imageLoader = new ImageLoader();
 
         viewModel = new ViewModelProvider(this).get(MovieListViewModel.class);
         setContentView(R.layout.activity_movie_details);
@@ -73,9 +96,10 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
         actorsRecyclerView.setLayoutManager(actorsLayoutManager);
         similarRecyclerView.setLayoutManager(similarMoviesLayoutManager);
 
-        Intent i = getIntent();
-        int movie_id = i.getIntExtra("Movie_id", 0);
+        i = getIntent();
+    }
 
+    private void getSimilarMovies(int movie_id){
         viewModel.getSimilarMovies(""+movie_id).observe(this, new Observer<List<MovieModel>>() {
             @Override
             public void onChanged(List<MovieModel> movieModels) {
@@ -100,7 +124,35 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
                 });
             }
         });
+    }
 
+    private void getActors(int movie_id){
+        viewModel.getActors("" + movie_id).observe(this, new Observer<List<ActorModel>>() {
+            @Override
+            public void onChanged(List<ActorModel> actorModels) {
+                actors = new ArrayList<>();
+                for (ActorModel actor : actorModels) {
+                    actors.add(actor);
+                }
+                actorsListAdapter = new ActorsListAdapter(getApplicationContext(), actors);
+                actorsRecyclerView.setAdapter(actorsListAdapter);
+            }
+        });
+
+
+        imageLoader.loadImage(movieImage, i.getStringExtra("ImagePath"));
+        movieName.setText(i.getStringExtra("MovieName"));
+        movieRating.setText(i.getStringExtra("MovieRating").substring(0, 3));
+        movieOverview.setText(i.getStringExtra("MovieOverview"));
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+    private void getGenres(int movie_id){
         viewModel.getGenres(movie_id).observe(this, new Observer<List<GenreModel>>() {
             @Override
             public void onChanged(List<GenreModel> genreModels) {
@@ -116,6 +168,7 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
                         genre_id = genres.get(position).getId();
                         Intent i = new Intent(getApplicationContext(), CategoryMoviesList.class);
                         i.putExtra("genre_id", "" + genre_id);
+                        i.putExtra("category_name",genres.get(position).getName());
                         startActivity(i);
                     }
                 });
@@ -123,51 +176,5 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
 
             }
         });
-
-        viewModel.getActors("" + movie_id).observe(this, new Observer<List<ActorModel>>() {
-            @Override
-            public void onChanged(List<ActorModel> actorModels) {
-                actors = new ArrayList<>();
-                for (ActorModel actor : actorModels) {
-                    actors.add(actor);
-                }
-                actorsListAdapter = new ActorsListAdapter(getApplicationContext(), actors);
-                actorsRecyclerView.setAdapter(actorsListAdapter);
-            }
-        });
-
-
-        loadImage(movieImage, i.getStringExtra("ImagePath"));
-        movieName.setText(i.getStringExtra("MovieName"));
-        movieRating.setText(i.getStringExtra("MovieRating").substring(0, 3));
-        movieOverview.setText(i.getStringExtra("MovieOverview"));
-
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-
-    }
-
-    private static void loadImage(ImageView imageView, String imageUrl) {
-        // Basic Url: "https://image.tmdb.org/t/p/w500"
-        if (imageUrl == null) {
-            imageView.setImageResource(R.drawable.no_image_available);
-        } else {
-            String imagePath = "https://image.tmdb.org/t/p/w500" + imageUrl;
-
-            Glide.with(imageView.getContext())
-                    .load(imagePath)
-                    .into(imageView);
-        }
-
-    }
-
-    @Override
-    public void onClick(View v) {
-
     }
 }

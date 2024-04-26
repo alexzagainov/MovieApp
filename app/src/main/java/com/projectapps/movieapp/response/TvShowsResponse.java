@@ -3,18 +3,18 @@ package com.projectapps.movieapp.response;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.projectapps.movieapp.models.MovieModel;
+import com.projectapps.movieapp.models.TvShowModel;
 
 import java.util.List;
 
-//This class is for getting multiple movies(Movies list) - popular movies
-public class MovieSearchResponse {
+public class TvShowsResponse {
     @SerializedName("total_results")
     @Expose()
     private int total_count;
 
     @SerializedName("results")
     @Expose()
-    private List<MovieModel> movies;
+    private List<TvShowModel> shows;
 
 
     public int getTotal_count(){
@@ -22,7 +22,8 @@ public class MovieSearchResponse {
     }
 
 
-    public List<MovieModel> getMovies() {
-        return movies;
+    public List<TvShowModel> getTvShows() {
+        return shows;
     }
+
 }

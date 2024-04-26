@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_movies"
+            android:title="Movies">
+            <menu>
+                <item
+                    android:id="@+id/nav_action"
+                    android:title="Action" />
+                <item
+                    android:id="@+id/nav_comedy"
+                    android:title="Comedy" />
+                <item
+                    android:id="@+id/nav_adventure"
+                    android:title="Adventure" />
+            </menu>
+        </item>
+        <item
+            android:id="@+id/nav_tv_shows"
+            android:title="TV Shows"
+            android:checkable="false"/>
+    </group>
+</menu>

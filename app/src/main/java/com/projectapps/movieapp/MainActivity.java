@@ -1,6 +1,11 @@
 package com.projectapps.movieapp;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -9,25 +14,31 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
 import com.projectapps.movieapp.adapters.MainMovieListAdapter;
 import com.projectapps.movieapp.models.MovieModel;
 import com.projectapps.movieapp.viewmodels.MovieListViewModel;
 import com.projectapps.movieapp.views.CategoryMoviesList;
 import com.projectapps.movieapp.views.MovieDetails;
+import com.projectapps.movieapp.views.TvShow;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,NavigationView.OnNavigationItemSelectedListener {
     ImageView welcomImage;
+
     Button popularBTN;
     Button upcomingBTN;
     Button topRatedBTN;
@@ -52,17 +63,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     MainMovieListAdapter mainAdapter;
 
-
-
-
-
     MovieListViewModel movieListViewModel;
 
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setMainActivity();
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
 
 
         searchBTN.setOnClickListener(this);
@@ -93,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent i = new Intent(getApplicationContext(), CategoryMoviesList.class);
                 i.putExtra("type", "Search");
                 i.putExtra("search", searchBar.getText().toString());
+                i.putExtra("category_name","Search results");
                 startActivity(i);
             }else{
                 Toast.makeText(this, "No text entered", Toast.LENGTH_SHORT).show();
@@ -101,7 +125,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void ObserveAnyChange() {
-
         DisplayMovies(movieListViewModel.getMovies("Popular", "", 1), popularMovies, popularRecycleView);
         DisplayMovies(movieListViewModel.getMovies("Upcoming", "", 1), upcomingMovies, upcomingRecyclerView);
         DisplayMovies(movieListViewModel.getMovies("TopRated", "", 1), topRatedMovies, topRatedRecyclerView);
@@ -114,6 +137,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void moveToCategoryView(String category){
         Intent i = new Intent(getApplicationContext(), CategoryMoviesList.class);
         i.putExtra("type",category);
+        i.putExtra("category_name",category);
+        startActivity(i);
+    }
+
+    private void moveToGenreList(int genre_id,String genre_name){
+        Intent i = new Intent(getApplicationContext(), CategoryMoviesList.class);
+        i.putExtra("genre_id", "" + genre_id);
+        i.putExtra("category_name",genre_name);
         startActivity(i);
     }
 
@@ -147,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         welcomImage = findViewById(R.id.main_welcome_image);
-        welcomImage.setImageResource(R.drawable.mainmoviephoto);
+        welcomImage.setImageResource(R.drawable.mainmoviephoto1);
 
 
         popularBTN = findViewById(R.id.popularMoviesButton);
@@ -181,6 +212,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         topRatedRecyclerView.setLayoutManager(layoutManager4);
 
         ObserveAnyChange();
+    }
+
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle navigation drawer item clicks here
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.nav_action) {
+            moveToGenreList(28,"Action");
+        } else if (itemId == R.id.nav_comedy) {
+            moveToGenreList(35,"Comedy");
+        } else if (itemId == R.id.nav_adventure) {
+            moveToGenreList(12,"Adventure");
+        } else if (itemId == R.id.nav_tv_shows) {
+            Intent i = new Intent(getApplicationContext(), TvShow.class);
+            i.putExtra("category_name","Tv Shows");
+            i.putExtra("type","Tv Shows");
+            startActivity(i);
+        }
+
+        // Close the drawer after handling item click
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }
